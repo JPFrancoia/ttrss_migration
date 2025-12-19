@@ -33,9 +33,9 @@ class TTRSSArticle(BaseModel):
     score: int
     note: Optional[str] = None
 
-    # From ttrss_feeds (via join)
-    feed_title: str
-    feed_url: str
+    # From ttrss_feeds (via join) - can be NULL if feed was deleted
+    feed_title: Optional[str] = None
+    feed_url: Optional[str] = None
 
     # Aggregated data
     tags: list[str] = Field(default_factory=list)

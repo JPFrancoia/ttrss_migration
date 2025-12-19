@@ -1,5 +1,6 @@
 -- Fetch articles from TTRSS with all necessary fields for migration
 -- Including entries, user_entries, feeds, tags, and labels
+-- Supports pagination with LIMIT and OFFSET
 with article_tags as (
     select
         ue.int_id,
@@ -58,6 +59,5 @@ from
     left join article_tags at on at.int_id = ue.int_id
     left join article_labels al on al.id = e.id
 order by
-    e.date_entered desc
-limit 100;
-
+    e.id
+limit %(limit)s offset %(offset)s;

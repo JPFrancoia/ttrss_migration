@@ -8,6 +8,7 @@ dependencies = [
     "psycopg>=3.3.2",
     "psycopg-pool>=3.3.0",
     "pydantic>=2.12.5",
+    "tqdm>=4.67.1",
 ]
 
 [dependency-groups]

@@ -1,7 +1,7 @@
 from functools import lru_cache
 from importlib.resources import files
 import logging
-from typing import LiteralString, cast
+from typing import AsyncGenerator, LiteralString, cast
 
 from psycopg import AsyncConnection
 from psycopg.rows import DictRow, dict_row
@@ -60,14 +60,42 @@ async def get_all_ttrss_feeds() -> list[TTRSSFeed]:
     return [TTRSSFeed(**dict(feed)) for feed in data]
 
 
-async def get_all_ttrss_articles() -> list[TTRSSArticle]:
-    query = _get_query_from_file("get_all_ttrss_articles.sql")
+async def count_ttrss_articles() -> int:
+    """Count total number of articles in TTRSS database."""
+    query = _get_query_from_file("count_ttrss_articles.sql")
 
     async with ttrss_global_pool.connection() as conn, conn.cursor() as cur:
         await cur.execute(query)
-        data = await cur.fetchall()
+        result = await cur.fetchone()
 
-    return [TTRSSArticle(**dict(article)) for article in data]
+    return result["count"] if result else 0
+
+
+async def get_all_ttrss_articles(
+    chunk_size: int = 500,
+) -> AsyncGenerator[list[TTRSSArticle], None]:
+    """
+    Fetch all TTRSS articles in chunks.
+    Yields lists of TTRSSArticle objects, chunk_size articles at a time.
+    """
+    query = _get_query_from_file("get_all_ttrss_articles.sql")
+    offset = 0
+
+    while True:
+        async with ttrss_global_pool.connection() as conn, conn.cursor() as cur:
+            await cur.execute(query, {"limit": chunk_size, "offset": offset})
+            data = await cur.fetchall()
+
+        if not data:
+            break
+
+        articles = [TTRSSArticle(**dict(article)) for article in data]
+        yield articles
+
+        offset += chunk_size
+
+        if len(articles) < chunk_size:
+            break
 
 
 async def insert_miniflux_feeds_batch(feeds: list[MinifluxFeed]) -> None:
