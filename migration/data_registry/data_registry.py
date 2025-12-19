@@ -8,7 +8,7 @@ from psycopg.rows import DictRow, dict_row
 from psycopg_pool import AsyncConnectionPool
 
 from migration import config
-# from feedoscope.entities import Article, TimeSensitivity
+from migration.entities import TTRSSArticle
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ ttrss_global_pool = AsyncConnectionPool(
 )
 
 miniflux_global_pool = AsyncConnectionPool(
-    config.TTRSS_DATABASE_URL,
+    config.MINIFLUX_DATABASE_URL,
     open=False,
     connection_class=AsyncConnection[DictRow],  # provides type hints
     kwargs={
@@ -48,3 +48,13 @@ def _get_query_from_file(filename: str) -> LiteralString:
     query = cast(LiteralString, query)
 
     return query
+
+
+async def get_all_ttrss_articles() -> list[TTRSSArticle]:
+    query = _get_query_from_file("get_all_ttrss_articles.sql")
+
+    async with ttrss_global_pool.connection() as conn, conn.cursor() as cur:
+        await cur.execute(query)
+        data = await cur.fetchall()
+
+    return [TTRSSArticle(**dict(article)) for article in data]
