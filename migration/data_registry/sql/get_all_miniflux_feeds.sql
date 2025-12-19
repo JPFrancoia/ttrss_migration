@@ -1,0 +1,49 @@
+-- Fetch all feeds from Miniflux for a specific user
+select
+    id,
+    user_id,
+    category_id,
+    title,
+    feed_url,
+    site_url,
+    checked_at,
+    etag_header,
+    last_modified_header,
+    parsing_error_msg,
+    parsing_error_count,
+    scraper_rules,
+    rewrite_rules,
+    crawler,
+    username,
+    password,
+    user_agent,
+    disabled,
+    next_check_at,
+    ignore_http_cache,
+    fetch_via_proxy,
+    blocklist_rules,
+    keeplist_rules,
+    allow_self_signed_certificates,
+    cookie,
+    hide_globally,
+    url_rewrite_rules,
+    no_media_player,
+    apprise_service_urls,
+    disable_http2,
+    description,
+    ntfy_enabled,
+    ntfy_priority,
+    webhook_url,
+    pushover_enabled,
+    pushover_priority,
+    ntfy_topic,
+    proxy_url,
+    block_filter_entry_rules,
+    keep_filter_entry_rules
+from
+    feeds
+where
+    user_id = % (user_id) s
+order by
+    id;
+
