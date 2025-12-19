@@ -20,4 +20,4 @@ assert TTRSS_DATABASE_URL != "", "TTRSS_DATABASE_URL environment variable is not
 MINIFLUX_DATABASE_URL = os.getenv("MINIFLUX_DATABASE_URL", "")
 assert MINIFLUX_DATABASE_URL != "", "MINIFLUX_DATABASE_URL environment variable is not set"
 
-LOGGING_CONFIG = os.getenv("LOGGING_CONFIG", "logging.conf")
+LOGGING_CONFIG = os.getenv("LOGGING_CONFIG", "dev_logging.conf")

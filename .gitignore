@@ -12,3 +12,4 @@ wheels/
 *.envrc
 
 .python-version
+*activity.log*
