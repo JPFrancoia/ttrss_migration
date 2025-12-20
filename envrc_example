@@ -1,0 +1,14 @@
+# Example environment configuration file
+# Copy this file to .envrc and update with your actual database credentials
+# Then run: source .envrc
+
+# TTRSS database connection string
+# Format: postgresql://[user[:password]@][host][:port][/dbname]
+export TTRSS_DATABASE_URL="postgresql://ttrss_user:ttrss_password@localhost:5432/ttrss"
+
+# Miniflux database connection string
+# Format: postgresql://[user[:password]@][host][:port][/dbname]
+export MINIFLUX_DATABASE_URL="postgresql://miniflux:miniflux_password@localhost:5432/miniflux"
+
+# Optional: Logging configuration file (defaults to dev_logging.conf)
+# export LOGGING_CONFIG="dev_logging.conf"
