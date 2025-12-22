@@ -86,6 +86,7 @@ class TTRSSArticle(BaseModel):
             created_at=self.date_entered,
             tags=all_tags,
             vote=vote,
+            score=self.score,
         )
 
 
@@ -139,6 +140,7 @@ class MinifluxArticle(BaseModel):
     created_at: datetime
     tags: list[str] = Field(default_factory=list)
     vote: int = 0  # -1 for published/shared, 0 for normal, 1 for voted up
+    score: int = 0  # Article score from TTRSS
 
 
 class MinifluxFeed(BaseModel):

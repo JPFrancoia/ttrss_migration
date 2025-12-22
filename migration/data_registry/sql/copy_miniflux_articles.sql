@@ -14,6 +14,7 @@ copy entries (
     reading_time,
     created_at,
     tags,
-    vote
+    vote,
+    score
 )
 from stdin;

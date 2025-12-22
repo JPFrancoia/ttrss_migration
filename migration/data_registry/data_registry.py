@@ -199,6 +199,7 @@ async def insert_miniflux_articles_batch(articles: list[MinifluxArticle]) -> Non
                 article.created_at,
                 article.tags,
                 article.vote,
+                article.score,
             )
             await copy.write_row(row)
 
