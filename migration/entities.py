@@ -6,6 +6,8 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from migration.utils import clean_title
+
 
 class TTRSSArticle(BaseModel):
     # From ttrss_entries
@@ -74,7 +76,7 @@ class TTRSSArticle(BaseModel):
             feed_id=miniflux_feed_id,
             hash=hash_str,
             published_at=self.date_entered,
-            title=self.title,
+            title=clean_title(self.title),
             url=self.link,
             author=self.author or "",
             content=self.content or "",
